@@ -3,7 +3,7 @@ variable "AWS_REGION" {
 }
 
 variable "PRIV_KEY_PATH" {
-  default = "vprofilekeyy"
+  default = "vprofilekey"
 }
 
 variable "PUB_KEY_PATH" {
