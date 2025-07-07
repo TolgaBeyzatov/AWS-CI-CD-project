@@ -76,6 +76,11 @@ resource "aws_security_group" "allow_access_ecs_service" {
   description = "Access rules for the ECS service"
   name        = "vprofile-ecs-service"
   vpc_id      = module.vpc.vpc_id
+  tags = {
+    Name      = "vprofile-ecs-sg"
+    ManagedBy = "Terraform"
+    Project   = "Vprofile"
+  }
 
   # Outbound access to endpoints
   egress {
@@ -86,9 +91,9 @@ resource "aws_security_group" "allow_access_ecs_service" {
   }
   # RDS connectivity
   egress {
-    from_port = 5432
-    to_port   = 5432
-    protocol = "tcp"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
