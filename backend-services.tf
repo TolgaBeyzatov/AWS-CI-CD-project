@@ -77,7 +77,7 @@ data "aws_db_instance" "RDS_Endpoint" {
 
 data "aws_elasticache_cluster" "MemcachedEndpoint" {
   cluster_id = "vprofile-cache"
-  depends_on = [  
+  depends_on = [
     aws_elasticache_cluster.vprofile-cache
   ]
 }

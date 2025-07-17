@@ -96,16 +96,16 @@ resource "aws_ecs_task_definition" "vproapptd" {
       #     value = var.dbpass
       #   }
 
-        # {
-        #   name  = "MemcachedEndpoint"
-        #   value = aws_elasticache_cluster.vprofile-cache.configuration_endpoint
+      # {
+      #   name  = "MemcachedEndpoint"
+      #   value = aws_elasticache_cluster.vprofile-cache.configuration_endpoint
 
-        # },
-        # {
-        #   name  = "RabbitMQEndpoint"
-        #   value = aws_mq_broker.vprofile-rmq.instances.0.endpoints
-        # }
-      
+      # },
+      # {
+      #   name  = "RabbitMQEndpoint"
+      #   value = aws_mq_broker.vprofile-rmq.instances.0.endpoints
+      # }
+
     }
 
   ])
