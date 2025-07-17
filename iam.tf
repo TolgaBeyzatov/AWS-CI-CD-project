@@ -2,6 +2,10 @@
 
 resource "aws_iam_user" "iam_user" {
   name = "terraadmin"
+
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
 }
 
 
@@ -38,4 +42,29 @@ resource "aws_iam_policy" "ecr" {
 resource "aws_iam_user_policy_attachment" "ecr" {
   user       = aws_iam_user.iam_user.name
   policy_arn = aws_iam_policy.ecr.arn
+}
+
+# Policy for ECS task definition.
+
+data "aws_iam_policy_document" "ecs_task_definition_policy" {
+  statement {
+    sid    = "ECSTaskDefinitionManagement"
+    effect = "Allow"
+    actions = [
+      "ecs:RegisterTaskDefinition",
+      "ecs:DescribeTaskDefinition",
+      "ecs:DeregisterTaskDefinition",
+      "iam:PassRole",
+      "ecs:TagResource",
+      "ecs:UntagResource"
+    ]
+    resources = [
+      "*", # Restrict to specific ARNs if needed
+    ]
+  }
+}
+
+resource "aws_iam_policy" "ecs_task_definition_policy" {
+  name   = "ecs-task-definition-policy"
+  policy = data.aws_iam_policy_document.ecs_task_definition_policy.json
 }

@@ -72,6 +72,19 @@ resource "aws_vpc_security_group_ingress_rule" "Backendsec_group_allow_itself" {
   to_port                      = 65535
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allowInboundTrafficFromECS" {
+  security_group_id            = aws_security_group.vprofile-backend-sg.id
+  referenced_security_group_id = aws_security_group.allow_access_ecs_service.id
+  from_port                    = 3306
+  ip_protocol                  = "tcp"
+  to_port                      = 3306
+
+
+  tags = {
+    Name = "ecs-db-security-group"
+  }
+}
+
 resource "aws_security_group" "allow_access_ecs_service" {
   description = "Access rules for the ECS service"
   name        = "vprofile-ecs-service"
@@ -84,17 +97,25 @@ resource "aws_security_group" "allow_access_ecs_service" {
 
   # Outbound access to endpoints
   egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   # RDS connectivity
   egress {
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 0 
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+
   }
 
   # http connectivity 
@@ -104,11 +125,33 @@ resource "aws_security_group" "allow_access_ecs_service" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  # load balancer 
+  # Application load balancer - INBOUND
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Application load balancer - OUTBOUND
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }

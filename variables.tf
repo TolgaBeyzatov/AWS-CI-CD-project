@@ -19,19 +19,19 @@ variable "MYIP" {
 }
 
 variable "rmquser" {
-  default = "rabbit"
+  default = "rabbit" # Make it a secret!
 }
 
 variable "rmqpass" {
-  default = "Gr33n@pple123456"
+  default = "Gr33n@pple123456" # Make it a secret!
 }
 
 variable "dbuser" {
-  default = "admin"
+  default = "admin" # Make it a secret!
 }
 
 variable "dbpass" {
-  default = "admin123"
+  default = "admin123" # Make it a secret!
 }
 
 variable "dbname" {

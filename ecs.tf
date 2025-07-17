@@ -82,6 +82,30 @@ resource "aws_ecs_task_definition" "vproapptd" {
           awslogs-stream-prefix = "ecs"
         }
       }
+      # environment = [
+      #   {
+      #     name  = "ENDPOINT"
+      #     value = data.aws_db_instance.RDS_Endpoint.endpoint
+      #   },
+      #   {
+      #     name = "dbuser"
+      #     value = var.dbuser
+      #   },
+      #   {
+      #     name = "dbpass"
+      #     value = var.dbpass
+      #   }
+
+        # {
+        #   name  = "MemcachedEndpoint"
+        #   value = aws_elasticache_cluster.vprofile-cache.configuration_endpoint
+
+        # },
+        # {
+        #   name  = "RabbitMQEndpoint"
+        #   value = aws_mq_broker.vprofile-rmq.instances.0.endpoints
+        # }
+      
     }
 
   ])
@@ -97,12 +121,18 @@ resource "aws_ecs_task_definition" "vproapptd" {
 }
 
 resource "aws_ecs_service" "vproapp_ecs_service" {
-  name                   = "ecs_service"
+  name                   = "vproapp_ecs_service"
   cluster                = aws_ecs_cluster.cluster_vpro.name
   task_definition        = aws_ecs_task_definition.vproapptd.family
   desired_count          = 1
   launch_type            = "FARGATE"
   enable_execute_command = true
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.target_group.arn
+    container_name   = "vproapp"
+    container_port   = 8080
+  }
 
   network_configuration {
     assign_public_ip = false
@@ -115,4 +145,9 @@ resource "aws_ecs_service" "vproapp_ecs_service" {
 
     security_groups = [aws_security_group.allow_access_ecs_service.id]
   }
+
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
+
 }

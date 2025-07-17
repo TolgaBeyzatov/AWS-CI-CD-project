@@ -17,6 +17,7 @@ resource "aws_elasticache_subnet_group" "vprofile-ecache-subgrp" {
 }
 
 resource "aws_db_instance" "vprofile-rds" {
+  identifier             = "vprofile-rds"
   allocated_storage      = 20
   storage_type           = "gp3"
   engine                 = "mysql"
@@ -58,4 +59,50 @@ resource "aws_mq_broker" "vprofile-rmq" {
     username = var.rmquser
     password = var.rmqpass
   }
+}
+
+data "aws_mq_broker" "rabbitmq" {
+  broker_name = "vprofile-rmq"
+  depends_on = [
+    aws_mq_broker.vprofile-rmq
+  ]
+}
+
+data "aws_db_instance" "RDS_Endpoint" {
+  db_instance_identifier = "vprofile-rds"
+  depends_on = [
+    aws_db_instance.vprofile-rds
+  ]
+}
+
+data "aws_elasticache_cluster" "MemcachedEndpoint" {
+  cluster_id = "vprofile-cache"
+  depends_on = [  
+    aws_elasticache_cluster.vprofile-cache
+  ]
+}
+
+# Outputs the MQ Endpint in a parameter store
+resource "aws_ssm_parameter" "MQ_endpoint" {
+  name        = "RabbitMQEndpoint"
+  description = "Stores the RabbitMQ endpoint"
+  type        = "String"
+  value       = data.aws_mq_broker.rabbitmq.id
+}
+
+# Outputs the RDS Endpoint in a parameter store. 
+resource "aws_ssm_parameter" "RDS_endpoint" {
+  name        = "RDSEndpoint"
+  description = "Stores the RDS endpoint"
+  type        = "String"
+  value       = data.aws_db_instance.RDS_Endpoint.endpoint
+}
+
+# Outputs the Memcached Endpoint in a Parameter store.
+resource "aws_ssm_parameter" "Memcached_endpoint" {
+  name        = "MemcachedEndpoint"
+  description = "Stores the Memcached endpoint"
+  type        = "String"
+  value       = data.aws_elasticache_cluster.MemcachedEndpoint.configuration_endpoint
+
 }
