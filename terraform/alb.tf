@@ -28,11 +28,19 @@ resource "aws_lb_target_group" "target_group" {
   }
 }
 
-# Defines an HTTP Listener for the ALB
+data "aws_acm_certificate" "issued" {
+  domain   = "*.tfbbb.xyz"
+  statuses = ["ISSUED"]
+}
+
+# Defines an HTTPS Listener for the ALB
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_alb.application_load_balancer.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = data.aws_acm_certificate.issued.arn
+
 
   default_action {
     type             = "forward"
