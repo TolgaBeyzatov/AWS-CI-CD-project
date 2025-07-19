@@ -62,7 +62,7 @@ jobs:
       - name: Terraform Apply  ## Will be applied only if the branch name is main and there is a push event.
         id: apply 
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve input=false -parallelism=1 planfile
+        run: terraform apply -auto-approve -input=false -parallelism=1 planfile
 
 
 
