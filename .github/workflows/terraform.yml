@@ -3,7 +3,7 @@ on:
   push: 
     branches:
       - main
-      - iac 
+      - stage 
     paths:
       - terraform/**
   pull_request:
@@ -58,6 +58,11 @@ jobs:
       - name: Terraform plan status
         if: steps.plan.outcome == 'failure' # if the outcome of plan is failure the container shell gets killed
         run: exit 1
+
+      - name: Terraform Apply  ## Will be applied only if the branch name is main and there is a push event.
+        id: apply 
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve input=false -parallelism=1 planfile
 
 
 
