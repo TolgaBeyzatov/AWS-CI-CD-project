@@ -133,7 +133,7 @@ resource "aws_ecs_service" "vproapp_ecs_service" {
     container_name   = "vproapp"
     container_port   = 8080
   }
-# Ensure service depends on load balancer resources. 
+  # Ensure service depends on load balancer resources. 
   depends_on = [aws_lb_listener.listener]
 
   network_configuration {
