@@ -3,7 +3,7 @@
 # Defining the Application Load Balancer
 resource "aws_alb" "application_load_balancer" {
   name               = "vpro-alb"
-  internal           = false
+  internal           = true
   load_balancer_type = "application"
   subnets            = [module.vpc.private_subnets[0], module.vpc.private_subnets[1], module.vpc.private_subnets[2]]
   security_groups    = [aws_security_group.allow_access_ecs_service.id]
