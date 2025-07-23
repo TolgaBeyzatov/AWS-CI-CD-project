@@ -118,13 +118,7 @@ resource "aws_security_group" "allow_access_ecs_service" {
 
   }
 
-  # http connectivity 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
   # Application load balancer - INBOUND
   ingress {
     from_port   = 8080
@@ -133,6 +127,7 @@ resource "aws_security_group" "allow_access_ecs_service" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # http connectivity
   ingress {
     from_port   = 80
     to_port     = 80
