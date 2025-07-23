@@ -33,10 +33,26 @@ resource "aws_apigatewayv2_route" "apigw_route" {
   depends_on = [aws_apigatewayv2_integration.apigw_integration]
 }
 
-# Set a default stage
+# Set a default stage aws_apigatewayv2_domain_name
 resource "aws_apigatewayv2_stage" "apigw_stage" {
   api_id      = aws_apigatewayv2_api.apigw_http_endpoint.id
   name        = "$default"
   auto_deploy = true
   depends_on  = [aws_apigatewayv2_api.apigw_http_endpoint]
+}
+
+resource "aws_apigatewayv2_domain_name" "domain_name" {
+  domain_name = "*.tfbbb.xyz"
+
+  domain_name_configuration {
+    certificate_arn = data.aws_acm_certificate.issued.arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+}
+
+resource "aws_apigatewayv2_api_mapping" "stage_mapping" {
+  api_id      = aws_apigatewayv2_api.apigw_http_endpoint.id
+  stage       = aws_apigatewayv2_stage.apigw_stage.id
+  domain_name = aws_apigatewayv2_domain_name.domain_name.id # Links the mapping to the aws_api_gateway_domain.  
 }
