@@ -78,7 +78,7 @@ resource "aws_vpc_security_group_ingress_rule" "allowInboundTrafficFromECSMemcac
   from_port                    = 11211
   ip_protocol                  = "tcp"
   to_port                      = 11211
-  }
+}
 
 resource "aws_vpc_security_group_ingress_rule" "allowInboundTrafficFromECS" {
   security_group_id            = aws_security_group.vprofile-backend-sg.id
