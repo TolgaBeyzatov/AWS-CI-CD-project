@@ -82,6 +82,7 @@ resource "aws_ecs_task_definition" "vproapptd" {
           awslogs-stream-prefix = "ecs"
         }
       }
+
       # environment = [
       #   {
       #     name  = "ENDPOINT"

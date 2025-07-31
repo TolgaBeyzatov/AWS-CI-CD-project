@@ -72,13 +72,20 @@ resource "aws_vpc_security_group_ingress_rule" "Backendsec_group_allow_itself" {
   to_port                      = 65535
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allowInboundTrafficFromECSMemcached" {
+  security_group_id            = aws_security_group.vprofile-backend-sg.id
+  referenced_security_group_id = aws_security_group.allow_access_ecs_service.id
+  from_port                    = 11211
+  ip_protocol                  = "tcp"
+  to_port                      = 11211
+  }
+
 resource "aws_vpc_security_group_ingress_rule" "allowInboundTrafficFromECS" {
   security_group_id            = aws_security_group.vprofile-backend-sg.id
   referenced_security_group_id = aws_security_group.allow_access_ecs_service.id
   from_port                    = 3306
   ip_protocol                  = "tcp"
   to_port                      = 3306
-
 
   tags = {
     Name = "ecs-db-security-group"
