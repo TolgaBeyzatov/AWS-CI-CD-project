@@ -25,13 +25,12 @@ Tools and services used in the project:
   - API GW route with ANY method. In general Routes direct incoming API requests to backend resources. For the project it is used "ANY" method to match all the methods which are haven't defined for the resource. It is used $default route that acts as a catch-all for requests that don't match any other routes. When the $default route receives a request, API Gateway sends the full request path to the integration. ("https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-routes.html#:~:text=When%20a%20client%20sends%20an,does%20not%20generate%20CloudWatch%20logs.")
   A so called "greedy path variable" is used as {proxy+} which catches all child resources of a route.
   - Set a default stage aws_apigatewayv2_domain_name - In this step a custom domain name which is created in GoDaddy is associated and configured with an ACM certificate, endpoint type and security policy; The default stage is mapped to the domain name (*.tfbbb.xyz).
-
-
-API Gateway is associated with an ACM certificate For improving the security and using https connection through custom domain name for the end user, a Custom Domain name is integrated it is used a custom domain name for the API Gateway with 
-- Parameter Store
-- IAM
-- VPC
-- ALB
+ 
+  The end user connects to the application via https connectivity using the abovementioned GoDaddy domain address https://cvapp.tfbbb.xyz.
+- Parameter Store - Used to safely maintain by Terraform and get by the CI/CD workflow endpoints for the services used in the app.
+- IAM - Used to manage the IAC and CI/CD users and policies needed to run the infrastructure, tests and deployments smoothly and securely.
+- VPC - A VPC is initiated in the IAC to create an isolated private cloud with custom subnets, security groups and services.
+- ALB - An Application load balancer is used to safely connect The ECS containers in the Private subnets, to load balance the traffic (In this project there is only one container for the sake of economies and simplicity but they can easily scaled) and also to maintain sticky sessions when there are more than one containers. 
 - VPC Link resource - Allows connecting API routes within VPC, such as in this project it connects the Application load Balancer which operates in private subnet, without exposing to the public internet. The benefits of using it are: 
   Enhanced security - reducing the attack surface;
   Private Access - Allows access to resources that are not publicly accessible;
