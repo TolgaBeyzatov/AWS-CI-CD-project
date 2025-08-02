@@ -41,7 +41,7 @@ resource "aws_lb_listener" "listener" {
 
 
 
-  # # Defines an HTTPS Listener for the ALB
+  # # Defines an HTTPS Listener for the ALB  //Commented as I chose to use API Gateway HTTP APIs
   # resource "aws_lb_listener" "listener" {
   #   load_balancer_arn = aws_alb.application_load_balancer.arn
   #   port              = "443"
