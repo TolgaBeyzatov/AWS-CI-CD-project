@@ -1,2 +1,44 @@
 # AWS-CI-CD-project
-# AWS-CI-CD-project
+
+
+This is my DevOps project, implemented as a Blog web application to represent my ability to build and automate an entire CI/CD process. The project is separated into two GitHub repositories to make it more easy to work with by different team and also to make it more readable and easily track the versions of deployments separately. 
+
+The repository named AWS-CI-CD-project contains Infrastructure as code in AWS using an IAC tool Terraform. It is automated in a workflow using GitHub Actions. The workflow creates a container with Ubuntu image in which in further steps checks for the source code, sets up Terraform, afterwards initializes the terraform code in the specified folder, checks if it is properly formatted, validates it, prepares a plan with an output, displays the output and if it is a success and the code is run in in the main branch, applies it to AWS.
+
+Tools and services used in the project:
+- Terraform, , , , , , AWS services such as , , , ,, , , , , , , Elasticache Memcached, RabbitMQ
+- Git
+- GitHub
+- GitHub Actions
+- SonarQube Cloud
+- Docker
+- Maven
+- ECS
+- ECR
+- EC2 - In this project an EC2 instance is used as a Bastion host which role is to deploy the database schema. It uses a script located in the AWS-CI-CD-project GitHub repository /terraform/templates/db-deploy.tmpl.
+- S3 - The object storage service is used as a backend for storing the state in a remote service. Accessing remote state requires access credentials which are stored as Secrets in GitHub, since state data contains extremely sensitive information. It also allows multiple teams to access it. 
+- API Gateway - The project uses API Gateway since it acts as a mediator between clients and backend services, manages traffic and enforces security. 
+  The API Gateway configuration includes the following steps:
+  - Creating VPC Link configured with the private subnets;
+  - Creating the API Gateway HTTP endpoint;
+  - Creating the API Gateway HTTP_PROXY integration between the     created API and the private ALB via the VPC Link;
+  - API GW route with ANY method. In general Routes direct incoming API requests to backend resources. For the project it is used "ANY" method to match all the methods which are haven't defined for the resource. It is used $default route that acts as a catch-all for requests that don't match any other routes. When the $default route receives a request, API Gateway sends the full request path to the integration. ("https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-routes.html#:~:text=When%20a%20client%20sends%20an,does%20not%20generate%20CloudWatch%20logs.")
+  A so called "greedy path variable" is used as {proxy+} which catches all child resources of a route.
+  - Set a default stage aws_apigatewayv2_domain_name - In this step a custom domain name which is created in GoDaddy is associated and configured with an ACM certificate, endpoint type and security policy; The default stage is mapped to the domain name (*.tfbbb.xyz).
+
+
+API Gateway is associated with an ACM certificate For improving the security and using https connection through custom domain name for the end user, a Custom Domain name is integrated it is used a custom domain name for the API Gateway with 
+- Parameter Store
+- IAM
+- VPC
+- ALB
+- VPC Link resource - Allows connecting API routes within VPC, such as in this project it connects the Application load Balancer which operates in private subnet, without exposing to the public internet. The benefits of using it are: 
+  Enhanced security - reducing the attack surface;
+  Private Access - Allows access to resources that are not publicly accessible;
+  Simplified Architecture - eliminates the need for public IPs, Internet Gateways or VPNs for internal communication.
+- RDS MySQL 
+- 
+- 
+- 
+- 
+- 
