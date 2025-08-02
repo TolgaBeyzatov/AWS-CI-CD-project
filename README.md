@@ -13,8 +13,9 @@ Tools and services used in the project:
 - SonarQube Cloud
 - Docker
 - Maven
-- ECS
-- ECR
+- ECS - An ECS container contains the Apache Tomcat application after being defined by Task definition. The task definition file is defined in Terraform since this approach provides version control, reproducability and consistency across environments. Other benefits for using this approach can be pointed as Automation and Simplified Management - managing ECS task definitions alongside other infrastructure resources (like clusters, services, etc.) within the same Terraform configuration. 
+A lifecycle rule for ignoring changes is used in the defining of the service to prevent Terraform from updating the task definition on every apply as a new task definition with container definition is being deployed on every of a new version of the application.
+- ECR - The workflow builds an image with the latest tag and version number from a multistage Dockerfile located in the AWS-CI-CD-project-action repository. After the built is done it pushes the image to the AWS ECR.
 - EC2 - In this project an EC2 instance is used as a Bastion host which role is to deploy the database schema. It uses a script located in the AWS-CI-CD-project GitHub repository /terraform/templates/db-deploy.tmpl.
 - S3 - The object storage service is used as a backend for storing the state in a remote service. Accessing remote state requires access credentials which are stored as Secrets in GitHub, since state data contains extremely sensitive information. It also allows multiple teams to access it. 
 - API Gateway - The project uses API Gateway since it acts as a mediator between clients and backend services, manages traffic and enforces security. 
