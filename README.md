@@ -36,9 +36,6 @@ A lifecycle rule for ignoring changes is used in the defining of the service to 
   Enhanced security - reducing the attack surface;
   Private Access - Allows access to resources that are not publicly accessible;
   Simplified Architecture - eliminates the need for public IPs, Internet Gateways or VPNs for internal communication.
-- RDS MySQL 
-- RabbitMQ
-- Elasticache Memcached
-- 
-- 
-- 
+- RDS MySQL - The application uses RDS as its database, it is created during the Terraform apply process, its endpoint is exported to AWS Parameter Store and integrated in the Application.properties file with "sed" script in the CI/CD workflow before building the war. The database schema is deployed with a Bastion host.
+- RabbitMQ - The application connects to the RabbitMQ service the same way it connects to RDS. The choice of this service and not sqs  as a message broker is for simpler integration with the app.
+- Elasticache Memcached - The connection with the endpoint is same as with the previous two services. This project is still ongoing and I am still working on the implementation of Memcached with the application. It is going to help caching the results of database calls. 
