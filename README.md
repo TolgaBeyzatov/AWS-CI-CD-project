@@ -6,15 +6,15 @@ This is my DevOps project, implemented as a Blog web application to represent my
 The repository named AWS-CI-CD-project contains Infrastructure as code in AWS using an IAC tool Terraform. It is automated in a workflow using GitHub Actions. The workflow creates a container with Ubuntu image in which in further steps checks for the source code, sets up Terraform, afterwards initializes the terraform code in the specified folder, checks if it is properly formatted, validates it, prepares a plan with an output, displays the output and if it is a success and the code is run in in the main branch, applies it to AWS.
 
 Tools and services used in the project:
-- Terraform, , , , , , AWS services such as , , , ,, , , , , , , Elasticache Memcached, RabbitMQ
-- Git
-- GitHub
-- GitHub Actions
-- SonarQube Cloud
-- Docker
-- Maven
+- Terraform - is used as IaC tool for creation and deploying the AWS infrastructure where the application is deployed. It enhances the automation, consistency, version controlling, collaboration and cost saving.
+- Git - used as the version control system which GitHub uses.
+- GitHub - Used as a repository so the project can be stored, shared and tracked and managed changes. 
+- GitHub Actions - The project is automated using GitHub Actions workflows. 
+- SonarQube Cloud - SonarQube analyzes the source code, looking for potential issues like bugs, vulnerabilities and code smells. It generates detailed reports and visualizations of code quality metrics. after successful integration you can check the results in https://sonarcloud.io. This project also uses Quality Gates which can be defined in advance for certain level of percentage to pas. If the required level is exceeded the CI fails.
+- Docker - Docker is used for building the application and creating an image which is deployed in ECR. The Dockerfile is located in AWS-CI-CD-project-action repository. The application also runs in a ECS container.
+- Maven - Maven is used to ensure all the necessary components are automatically fetched and integrated into the project. It executes tests which is a crucial step in maintaining code quality. In the end it packages the Java application efficently in "war" file which is used afterwards in the deployment of the new application version in the ECS containers.
 - ECS - An ECS container contains the Apache Tomcat application after being defined by Task definition. The task definition file is defined in Terraform since this approach provides version control, reproducability and consistency across environments. Other benefits for using this approach can be pointed as Automation and Simplified Management - managing ECS task definitions alongside other infrastructure resources (like clusters, services, etc.) within the same Terraform configuration. 
-A lifecycle rule for ignoring changes is used in the defining of the service to prevent Terraform from updating the task definition on every apply as a new task definition with container definition is being deployed on every of a new version of the application.
+A lifecycle rule for ignoring changes is used in the defining of the service to prevent Terraform from updating the task definition on every apply as a new task definition with container definition is being deployed on each new version of the application.
 - ECR - The workflow builds an image with the latest tag and version number from a multistage Dockerfile located in the AWS-CI-CD-project-action repository. After the built is done it pushes the image to the AWS ECR.
 - EC2 - In this project an EC2 instance is used as a Bastion host which role is to deploy the database schema. It uses a script located in the AWS-CI-CD-project GitHub repository /terraform/templates/db-deploy.tmpl.
 - S3 - The object storage service is used as a backend for storing the state in a remote service. Accessing remote state requires access credentials which are stored as Secrets in GitHub, since state data contains extremely sensitive information. It also allows multiple teams to access it. 
@@ -37,8 +37,8 @@ A lifecycle rule for ignoring changes is used in the defining of the service to 
   Private Access - Allows access to resources that are not publicly accessible;
   Simplified Architecture - eliminates the need for public IPs, Internet Gateways or VPNs for internal communication.
 - RDS MySQL 
-- 
-- 
+- RabbitMQ
+- Elasticache Memcached
 - 
 - 
 - 
