@@ -1,3 +1,4 @@
+# Creates a private subnet group for RDS instances
 resource "aws_db_subnet_group" "vprofile-rds-subgrp" {
   name       = "vprofile-rds-subgrp"
   subnet_ids = [module.vpc.private_subnets[0], module.vpc.private_subnets[1], module.vpc.private_subnets[2]]
@@ -6,6 +7,7 @@ resource "aws_db_subnet_group" "vprofile-rds-subgrp" {
     Name = "Subnet group for RDS"
   }
 }
+
 
 resource "aws_elasticache_subnet_group" "vprofile-ecache-subgrp" {
   name       = "vprofile-ecache-subgrp"
@@ -16,6 +18,7 @@ resource "aws_elasticache_subnet_group" "vprofile-ecache-subgrp" {
   }
 }
 
+#Creates an RDS instance for MySQL. 
 resource "aws_db_instance" "vprofile-rds" {
   identifier             = "vprofile-rds"
   allocated_storage      = 20
@@ -34,6 +37,7 @@ resource "aws_db_instance" "vprofile-rds" {
   vpc_security_group_ids = [aws_security_group.vprofile-backend-sg.id]
 }
 
+# A Memcached cluster is created with only one node for simplicity and cost efficiency
 resource "aws_elasticache_cluster" "vprofile-cache" {
   cluster_id           = "vprofile-cache" //This is the name of the cluster
   engine               = "memcached"
@@ -45,7 +49,7 @@ resource "aws_elasticache_cluster" "vprofile-cache" {
   subnet_group_name    = aws_elasticache_subnet_group.vprofile-ecache-subgrp.name
 }
 
-
+# For simpler integration is created a RabbitMQ message broker
 resource "aws_mq_broker" "vprofile-rmq" {
   broker_name                = "vprofile-rmq"
   engine_type                = "RabbitMQ"
@@ -61,6 +65,7 @@ resource "aws_mq_broker" "vprofile-rmq" {
   }
 }
 
+# exporting the endpoint to further store in Parameter Store
 data "aws_mq_broker" "rabbitmq" {
   broker_name = "vprofile-rmq"
   depends_on = [
@@ -68,6 +73,7 @@ data "aws_mq_broker" "rabbitmq" {
   ]
 }
 
+# exporting the endpoint to further store in Parameter Store
 data "aws_db_instance" "RDS_Endpoint" {
   db_instance_identifier = "vprofile-rds"
   depends_on = [
@@ -75,6 +81,7 @@ data "aws_db_instance" "RDS_Endpoint" {
   ]
 }
 
+# exporting the endpoint to further store in Parameter Store
 data "aws_elasticache_cluster" "MemcachedEndpoint" {
   cluster_id = "vprofile-cache"
   depends_on = [

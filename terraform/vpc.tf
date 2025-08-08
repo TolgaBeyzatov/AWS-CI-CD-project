@@ -11,11 +11,11 @@ module "vpc" {
   enable_nat_gateway      = true
   single_nat_gateway      = true
   enable_dns_hostnames    = true
-  enable_dns_support      = true
+  enable_dns_support      = true //Allows resolving private IP addresses to hostnames
   map_public_ip_on_launch = true
 
-  tags = {
-    Name    = var.VPC_NAME
-    Project = var.PROJECT
-  }
+  # tags = {
+  #   Name    = var.VPC_NAME
+  #   Project = var.PROJECT
+  # }
 }
