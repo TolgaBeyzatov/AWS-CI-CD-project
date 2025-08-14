@@ -14,6 +14,12 @@ Second repository which includes Github Actions workflow for the CI/CD process p
 - Next step in the CI process is SonarQube analysis to analyze code and identify potential issues like bugs, vulnerabilities and code smells. It operates on the code that has been checked out from the VCS, generates an anlysis report and sends it to the SonarCloud server.
 - Last step before building and publishing the code to the ECR is the Quality gate status. It acts as a checkpoint in the CI/CD pipeline, ensuring code quality based on specific metrics and tresholds. There is a predefined threshold of conditions that the project's code must meet before it can be considered for release in the main branch.
 
+- Next job is Build and Publish. It checks the code, configures the AWS access credentials which are stored securely in Github Secrets, gets the RDS, RabbitMq, and Elasticache endpoint values from the AWS Parameter Store and updates the application.properties file. The last step is to build and upload the image to ECR with the multistage Dockerfile located in the repository.
+
+- The last job includes updating the new image ID and deploying the new parameters and number of containers in a task definition file ECS Service.
+
+Link for the repository: https://github.com/TolgaBeyzatov/AWS-CI-CD-project-action/tree/stage
+
 Tools and services used in the project:
 - Terraform - is used as IaC tool for creation and deploying the AWS infrastructure where the application is deployed. It enhances the automation, consistency, version controlling, collaboration and cost saving.
 - Git - used as the version control system which GitHub uses.
