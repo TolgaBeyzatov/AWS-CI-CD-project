@@ -55,6 +55,6 @@ A lifecycle rule for ignoring changes is used in the defining of the service to 
 - RabbitMQ - The application connects to the RabbitMQ service the same way it connects to RDS. The choice of this service and not sqs  as a message broker is for simpler integration with the app.
 - Elasticache Memcached - For simplicity and cost efficiency, the Elasticache cluster contains only one node in the cluster. It is deployed in a private subnet. The connection with the endpoint is same as with the previous two services. This project is still ongoing and I am still working on the implementation of Memcached with the application. It is going to help caching the results of database calls. 
 
-Links to access the repositories:
+Diagram for a visual representation of the cloud architecture of my project:
 
 ![alt text](image.png)
