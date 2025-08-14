@@ -8,6 +8,7 @@ The repository named AWS-CI-CD-project contains Infrastructure as code in AWS us
 Link for the repository: https://github.com/TolgaBeyzatov/AWS-CI-CD-project/tree/stage
 
 Second repository which includes Github Actions workflow for the CI/CD process performs the following steps:
+- First job is for testing the code with following steps:
 - Tests if the code can be accessed by the workflow;
 - Ensures that the source code is compiled before tests are run. "mvn test" offers immediate feddback on the internal logic of the code. This step is crucial for identifying and addressing issues promptly, significantly reducing bugs and enhancing code quality. This is an integral part of the CI proccess as it is a proactive approach to maintain a robust and efficient codebase.
 - Performs a checkstyle analysis to check if the code adheres to Java code quality standards and identifies potential issues. Enforces coding standards across the teams, identifies style violations before merging code.
