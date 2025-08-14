@@ -36,7 +36,7 @@ resource "aws_instance" "vprofile-bastion" {
   connection {
     type        = "ssh"
     user        = var.USERNAME
-    private_key = data.aws_ssm_parameter.vprofilekey.value  //file(var.PRIV_KEY_PATH) # Changed the ssh key to Parameter Store
+    private_key = data.aws_ssm_parameter.vprofilekey.value # Changed the ssh key to Parameter Store
     host        = self.public_ip
   }
 
