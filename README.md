@@ -1,9 +1,18 @@
 # AWS-CI-CD-project
 
 
-This is my DevOps project, implemented as a Blog web application to represent my ability to build and automate an entire CI/CD process. The project is separated into two GitHub repositories to make it more easy to work with by different team and also to make it more readable and easily track the versions of deployments separately. 
+This is my DevOps project, implemented as a Blog web application to represent my ability to build and automate an entire CI/CD process. The project is separated into two GitHub repositories to make it more easy to work with by different teams and also to make it more readable and easily track the versions of deployments separately. 
 
 The repository named AWS-CI-CD-project contains Infrastructure as code in AWS using an IAC tool Terraform. It is automated in a workflow using GitHub Actions. The workflow creates a container with Ubuntu image in which in further steps checks for the source code, sets up Terraform, afterwards initializes the terraform code in the specified folder, checks if it is properly formatted, validates it, prepares a plan with an output, displays the output and if it is a success and the code is run in in the main branch, applies it to AWS.
+
+Link for the repository: https://github.com/TolgaBeyzatov/AWS-CI-CD-project/tree/stage
+
+Second repository which includes Github Actions workflow for the CI/CD process performs the following steps:
+- Tests if the code can be accessed by the workflow;
+- Ensures that the source code is compiled before tests are run. "mvn test" offers immediate feddback on the internal logic of the code. This step is crucial for identifying and addressing issues promptly, significantly reducing bugs and enhancing code quality. This is an integral part of the CI proccess as it is a proactive approach to maintain a robust and efficient codebase.
+- Performs a checkstyle analysis to check if the code adheres to Java code quality standards and identifies potential issues. Enforces coding standards across the teams, identifies style violations before merging code.
+- Next step in the CI process is SonarQube analysis to analyze code and identify potential issues like bugs, vulnerabilities and code smells. It operates on the code that has been checked out from the VCS, generates an anlysis report and sends it to the SonarCloud server.
+- Last step before building and publishing the code to the ECR is the Quality gate status. It acts as a checkpoint in the CI/CD pipeline, ensuring code quality based on specific metrics and tresholds. There is a predefined threshold of conditions that the project's code must meet before it can be considered for release in the main branch.
 
 Tools and services used in the project:
 - Terraform - is used as IaC tool for creation and deploying the AWS infrastructure where the application is deployed. It enhances the automation, consistency, version controlling, collaboration and cost saving.
@@ -39,5 +48,7 @@ A lifecycle rule for ignoring changes is used in the defining of the service to 
 - RDS MySQL - The application uses RDS as its database, it is created during the Terraform apply process, its endpoint is exported to AWS Parameter Store and integrated in the Application.properties file with "sed" script in the CI/CD workflow before building the war. The database schema is deployed with a Bastion host.
 - RabbitMQ - The application connects to the RabbitMQ service the same way it connects to RDS. The choice of this service and not sqs  as a message broker is for simpler integration with the app.
 - Elasticache Memcached - For simplicity and cost efficiency, the Elasticache cluster contains only one node in the cluster. It is deployed in a private subnet. The connection with the endpoint is same as with the previous two services. This project is still ongoing and I am still working on the implementation of Memcached with the application. It is going to help caching the results of database calls. 
+
+Links to access the repositories:
 
 ![alt text](image.png)
