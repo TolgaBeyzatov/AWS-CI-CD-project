@@ -2,8 +2,13 @@ variable "AWS_REGION" {
   default = "us-east-1"
 }
 
-variable "PRIV_KEY_PATH" {
-  default = "vprofilekey"
+# variable "PRIV_KEY_PATH" {
+#   default = "vprofilekey"
+# }
+
+data "aws_ssm_parameter" "vprofilekey"  {
+  name = "vprofilekey"
+  with_decryption = false
 }
 
 variable "PUB_KEY_PATH" {

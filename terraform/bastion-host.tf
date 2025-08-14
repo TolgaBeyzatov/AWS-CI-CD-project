@@ -15,7 +15,6 @@ data "aws_ami" "ubuntu22ami" {
 }
 
 
-
 resource "aws_instance" "vprofile-bastion" {
   ami                    = data.aws_ami.ubuntu22ami.id
   instance_type          = "t3.micro"
@@ -37,7 +36,7 @@ resource "aws_instance" "vprofile-bastion" {
   connection {
     type        = "ssh"
     user        = var.USERNAME
-    private_key = file(var.PRIV_KEY_PATH)
+    private_key = data.aws_ssm_parameter.vprofilekey.value  //file(var.PRIV_KEY_PATH) # Changed the ssh key to Parameter Store
     host        = self.public_ip
   }
 
