@@ -1,16 +1,16 @@
 # AWS-CI-CD-project
 
 
-This is my DevOps project, implemented as a Blog web application to represent my ability to build and automate an entire CI/CD process. The project is separated into two GitHub repositories to make it more easy to work with by different teams and also to make it more readable and easily track the versions of deployments separately. 
+This is my DevOps project, implemented as a Blog web application to represent my ability to build and automate an entire CI/CD process. The project is separated into two GitHub repositories to make it more easy to work with by different teams and also to make it more readable and easy to track the versions of deployments separately. 
 
-The repository named AWS-CI-CD-project contains Infrastructure as code in AWS using an IAC tool Terraform. It is automated in a workflow using GitHub Actions. The workflow creates a container with Ubuntu image in which in further steps checks for the source code, sets up Terraform, afterwards initializes the terraform code in the specified folder, checks if it is properly formatted, validates it, prepares a plan with an output, displays the output and if it is a success and the code is run in in the main branch, applies it to AWS.
+The repository named AWS-CI-CD-project contains Infrastructure as code in AWS using an IAC tool Terraform. It is automated in a workflow using GitHub Actions. The workflow creates a container with Ubuntu image in which in further steps checks for the source code, sets up Terraform, afterwards initializes the terraform code in the specified folder, checks if it is properly formatted, validates it, prepares a plan with an output, displays the output and if it is a success and the code is run in the main branch, applies it to AWS.
 
 Link for the repository: https://github.com/TolgaBeyzatov/AWS-CI-CD-project/tree/stage
 
 Second repository which includes Github Actions workflow for the CI/CD process performs the following steps:
-- First job is for testing the code with following steps:
+- First job is testing:
 - Tests if the code can be accessed by the workflow;
-- Ensures that the source code is compiled before tests are run. "mvn test" offers immediate feddback on the internal logic of the code. This step is crucial for identifying and addressing issues promptly, significantly reducing bugs and enhancing code quality. This is an integral part of the CI proccess as it is a proactive approach to maintain a robust and efficient codebase.
+- Ensures that the source code is compiled before tests are run. "mvn test" offers immediate feedback on the internal logic of the code. This step is crucial for identifying and addressing issues promptly, significantly reducing bugs and enhancing code quality. This is an integral part of the CI proccess as it is a proactive approach to maintain a robust and efficient codebase.
 - Performs a checkstyle analysis to check if the code adheres to Java code quality standards and identifies potential issues. Enforces coding standards across the teams, identifies style violations before merging code.
 - Next step in the CI process is SonarQube analysis to analyze code and identify potential issues like bugs, vulnerabilities and code smells. It operates on the code that has been checked out from the VCS, generates an anlysis report and sends it to the SonarCloud server.
 - Last step before building and publishing the code to the ECR is the Quality gate status. It acts as a checkpoint in the CI/CD pipeline, ensuring code quality based on specific metrics and tresholds. There is a predefined threshold of conditions that the project's code must meet before it can be considered for release in the main branch.
@@ -59,3 +59,13 @@ A lifecycle rule for ignoring changes is used in the defining of the service to 
 Diagram for a visual representation of the cloud architecture of my project:
 
 ![alt text](image.png)
+
+Screenshots of the application:
+
+![alt text](<Screenshot 2025-08-14 114307.png>)
+
+![alt text](<Screenshot 2025-08-14 114406.png>)
+
+![alt text](<Screenshot 2025-08-14 114450.png>)
+
+![alt text](<Screenshot 2025-08-14 114519.png>)
